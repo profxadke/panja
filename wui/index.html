@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panja</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet"/>
+    <link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+            <!-- Chat bubbles will be appended here -->
+          <div class="intro">
+            <h1>Panja</h1>
+            <h3>An AI chatbot powered by Google AI's PaLM, hence Panja 😝</h3>
+          </div>
+        </div>
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" class="form-control" placeholder="Type your message...">
+            <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
