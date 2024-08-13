@@ -5,8 +5,6 @@ import google.generativeai as gai
 from os import environ as env
 from dotenv import load_dotenv
 from mdv import main as render
-from random import uniform
-from time import sleep
 from animations import teletype, Spinner
 
 
@@ -25,13 +23,15 @@ def main():
                 prompt = input("\n\x1b[1mYou\x1b[0m: ")
         except KeyboardInterrupt:
             prompt = 'die'
+            print('exit')
         except EOFError:
             prompt = 'quit'
+            print('exit')
         if prompt.lower() in ('bye', 'exit', 'quit', ':q', 'die'):
-            print("exit\ngAI: Bye! Have a great day.")
+            print("\x1b[1m\x1b[4mgAI\x1b[0m: Bye! Have a great day.")
             exit(0)
         try:
-            spinner = Spinner("\x1b[1m\x1b[4mThinking\x1b[0m.. ", 0.04)
+            spinner = Spinner("\x1b[4m\x1b[1mgAI\x1b[0m: \x1b[1mThinking\x1b[0m.. ", 0.04)
             spinner.start()
             resp = chat.send_message(prompt)
             spinner.stop()
