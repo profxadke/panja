@@ -1,0 +1,4 @@
+pyreadline3
+python-dotenv
+google-generativeai
+mdv
