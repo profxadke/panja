@@ -77,8 +77,6 @@ body, html {
 }
 
 .thinking {
-    /*width: 200px;
-    height: 200px;*/
     background-color: #e9ecef; /* Bright color */
     animation: fadeBackground 0.5s infinite alternate; /* Animation with infinite loop */
 }
@@ -123,4 +121,12 @@ body, html {
 
 textarea::-webkit-scrollbar {
     display: none; /* For Webkit browsers */
+}
+
+.hljs-copy {
+    float: right;
+    border-radius: 50px;
+    border: none;
+    background-color: #77B255;
+    font-size: initial;
 }
