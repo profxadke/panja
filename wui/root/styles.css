@@ -67,3 +67,7 @@ body, html {
 .intro {
   text-align: center;
 }
+
+textarea {
+  border-radius: 22px !important;
+}
