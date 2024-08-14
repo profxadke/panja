@@ -18,11 +18,11 @@ def main():
 
     while 1:
         try:
-            print("\x1b[1mYou\x1b[0m:", end=' ', flush=True)
-            prompt = input("")
+            print("\x1b[1mYou\x1b[0m", end='', flush=True)
+            prompt = input(": ")
             while not prompt:
-                print("\x1b[1mYou\x1b[0m:", end=' ', flush=True)
-                prompt = input("")
+                print("\x1b[1mYou\x1b[0m", end='', flush=True)
+                prompt = input(": ")
         except KeyboardInterrupt:
             prompt = 'die'
             print('exit')
