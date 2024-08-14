@@ -5,6 +5,7 @@ from os import environ as env
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 
@@ -40,6 +41,9 @@ def chat(prompt: Prompt):
         raise HTTPException(status_code=505, detail=f"Server Error: {e}")
     # TODO: integrate frontend, with markdown rendering.
     return {"resp": reply.text.strip()}
+
+
+app.mount("/", StaticFiles(directory="root"), name="root")
 
 
 if __name__ == '__main__':
