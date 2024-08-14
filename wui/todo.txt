@@ -1,4 +1,3 @@
-- Add thinking animation, while waiting for the response
 - Implement typing animation while showing up response within web UI
 - And, other web UI tweaks
-- Implementing the chat history, and context gathering from our previous chats ( via prompt engineering )
+- Implement a better textarea.

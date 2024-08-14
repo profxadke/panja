@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from contextlib import asynccontextmanager
-import google.generativeai as gai
+import google.generativeai as gAI
 from os import environ as env
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -12,14 +12,14 @@ from pydantic import BaseModel
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global Model, Chat
-    Model = gai.GenerativeModel('gemini-1.5-flash')
+    Model = gAI.GenerativeModel('gemini-1.5-flash')
     Chat = Model.start_chat()
     yield
     del Model, Chat
 
 
 load_dotenv()
-gai.configure(api_key=env["KEY"])
+gAI.configure(api_key=env["KEY"])
 app = FastAPI(lifespan=lifespan); api = app
 
 
@@ -30,14 +30,21 @@ class Prompt(BaseModel):
 @api.post('/chat')
 def chat(prompt: Prompt):
     try:
+        chat_history = []
         reply = Chat.send_message(prompt.message)
+        if Chat.history:
+            for history in Chat.history:
+                chat_history.append({
+                    'role': history.role,
+                    'msg': history.parts[0].text
+                })
+        if len(chat_history) >= 11: chat_history = chat_history[-11:]
         # print(reply)
     except Exception as e:
         raise HTTPException(status_code=555, detail=f"Server Error: {e}")
-    return {"resp": reply.text.strip()}
+    return {"resp": reply.text.strip(), "history": chat_history}
 
 
-# TODO: Enable rendering of markdown (API response)
 app.mount("/", StaticFiles(directory="root", html = True), name="root")
 
 

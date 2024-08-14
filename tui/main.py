@@ -23,6 +23,7 @@ def main():
             while not prompt:
                 print("\x1b[1mYou\x1b[0m", end='', flush=True)
                 prompt = input(": ")
+            readline.add_history(prompt)
         except KeyboardInterrupt:
             prompt = 'die'
             print('exit')

@@ -4,17 +4,6 @@ const renderMD = markdown => {
 
 
 async function getMessageResponse(message) {
-  /*
-  fetch('/chat', {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({message: message})
-  }).then( response => { 
-    response.json().then( json_resp => {
-      return json_resp.resp
-    })
-  })
-  */
   resp = await fetch('/chat', {
     method: "POST",
     headers: {"Content-Type": "application/json"},
@@ -27,39 +16,34 @@ async function getMessageResponse(message) {
 async function sendMessage() {
     const input = document.getElementById('chatInput');
     const message = input.value.trim();
-
     if (message) {
         appendMessage(message, 'user');
         input.value = '';
-
-        // FetchAPI for API responses
-        appendMessage('', 'bot');
+        appendMessage(' ', 'bot');
         chats = document.querySelectorAll('.chat-bubble');
-        chats[chats.length - 1].remove()
+        thinkingAnimation = chats[chats.length - 1];
+        thinkingAnimation.classList.add('thinking');
         const response = await getMessageResponse(message);
+        thinkingAnimation.remove()
         appendMessage(renderMD(response), 'bot');
-        /*
-        setTimeout(() => {
-            appendMessage('This is a bot response.', 'bot');
-        }, 1e3);
-        */
 
     }
 }
 
 
-function appendMessage(message, type) {
+const appendMessage = (message, type) => {
     const chatMessages = document.getElementById('chatMessages');
     const bubble = document.createElement('div');
     bubble.classList.add('chat-bubble', type);
-    bubble.innerHTML = message;
+    bubble.innerHTML = message.trim().replace(/\n/g, '<br />');
     chatMessages.appendChild(bubble);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 
-document.querySelector('input').onkeyup = e => {
-  if (e.key === "Enter") {
+document.querySelector('textarea').onkeyup = e => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
     sendMessage();
   }
 }
