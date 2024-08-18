@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 
-from discord import Intents
-from discord.ext import commands
+from discord import Intents, Object, Interaction, Client, Embed, Color
+from discord import app_commands
 import google.generativeai as gAI
 from os import environ as env
 from dotenv import load_dotenv
@@ -17,7 +17,8 @@ intents = Intents.default()
 intents.message_content = True
 intents.members = True
 chat = None
-bot = commands.Bot(command_prefix='> ', description=description, intents=intents)
+bot = Client(description=description, intents=intents)
+tree = app_commands.CommandTree(bot)
 
 
 def split_string_by_chunk(string, chunk_length):
@@ -33,11 +34,32 @@ def split_string_by_chunk(string, chunk_length):
   return [string[i:i+chunk_length] for i in range(0, len(string), chunk_length)]
 
 
+@tree.command(
+    name="chat",
+    description="Talk with P4nj.A!",
+    guild=Object(id=1274815394707935232)
+)
+async def chat(intr: Interaction, prompt: str):
+    channel = intr.channel
+    embed = Embed(title=prompt, color=Color.blue())
+    resp = chat.send_message(prompt).text.strip()
+    if len(resp) >= 1000:
+        response = split_string_by_chunk(resp, 1000)
+        for resp in response:
+            embed.add_field(name='', value=resp, inline=False)
+        await channel.send(embed=embed)
+        return
+    else:
+        embed.add_field(name='', value=resp, inline=False)
+    await intr.response.send_message(embed=embed)
+
+
 @bot.event
 async def on_ready():
     global chat
     model = gAI.GenerativeModel('gemini-1.5-flash')
     chat = model.start_chat()
+    await tree.sync(guild=Object(id=1274815394707935232))
     print('-'*5)
     print(f'[+] Logged in as {bot.user} (ID: {bot.user.id}) And, Gemini-1.5-Flash PaLM LLM started!')
     print('-'*5)
