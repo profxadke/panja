@@ -36,8 +36,7 @@ def split_string_by_chunk(string, chunk_length):
 
 @tree.command(
     name="chat",
-    description="Talk with P4nj.A!",
-    guild=Object(id=1274815394707935232)
+    description="Talk with P4nj.A!"
 )
 async def chat(intr: Interaction, prompt: str):
     channel = intr.channel
