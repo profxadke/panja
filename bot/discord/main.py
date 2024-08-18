@@ -10,9 +10,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 gAI.configure(api_key=env["KEY"])
-description = '''A simple bot to talk with Panj.AI
+description = '''A simple bot to talk with P4nj.A!
 
-Enjoy!!'''
+Either DM me, or use me on any #bot(s) channel with '> ' as prefix (yeah, a backquote)'''
 intents = Intents.default()
 intents.message_content = True
 intents.members = True
@@ -46,6 +46,19 @@ async def on_ready():
 @bot.event
 async def on_message(msg):
     # TODO: individual user's context handling for chat with the model.
+    if not msg.guild:
+        # This is a DM
+        if msg.author.bot:
+            return
+        async with msg.channel.typing():
+            resp = chat.send_message(msg.content).text.strip()
+            if len(resp) >= 1999:
+                response = split_string_by_chunk(resp, 1999)
+                await msg.reply(response[0], mention_author=False)
+                for resp in response[1:]:
+                    await msg.channel.send(resp)
+            else:
+                await msg.reply(resp, mention_author=False)
     if msg.content.startswith('> '):
         async with msg.channel.typing():
             resp = chat.send_message(msg.content[2:]).text.strip()
