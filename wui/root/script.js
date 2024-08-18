@@ -62,7 +62,7 @@ function messageApp() {
               fetch('/chat', {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({message: message})
+                body: JSON.stringify({message: newMsg.content.trim()})
               }).then( response => {
                     response.json().then( resp => {
                       this.isTyping = false;
@@ -89,7 +89,7 @@ function messageApp() {
 document.querySelector('textarea').onkeyup = e => {
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
-    sendMessage();
+    document.querySelector('button').click()
   }
 }
 

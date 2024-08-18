@@ -1,36 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panja</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet"/>
+    <title>P4nj.A!</title>
+    <!-- MDB5 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet">
+    <!-- HTMX JS -->
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <!-- Alpine.js -->
+    <script src="https://unpkg.com/alpinejs@3.12.0" defer></script>
+    <!-- Custom CSS -->
+    <link href="style.css" rel="stylesheet">
+    <!-- Other CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-dark.min.css" integrity="sha512-Jk4AqjWsdSzSWCSuQTfYRIF84Rq/eV0G2+tu07byYwHcbTGfdmLrHjUSwvzp5HvbiqK4ibmNwdcG49Y5RGYPTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.css" />
-    <link href="styles.css" rel="stylesheet"/>
 </head>
-<body>
-    <div class="chat-container">
-        <div class="chat-messages" id="chatMessages">
-          <div class="intro">
-            <h1>Panja</h1>
-            <h4>An AI chatbot powered by a Large Language Model (LLM) named <br /> Pathdway Language Model (PaLM) by Google AI. <br /> <br /> Hence the name Panja 😝</h4>
-            <!-- Chat bubbles will be appended here -->
-          </div>
+
+<body x-data="messageApp()">
+    <div class="messages-container">
+        <div class="messages-header">
+          ✨ P4nj.A! - Powered by Google AI
         </div>
-        <div class="chat-input-container">
-            <textarea type="text" id="chatInput" class="form-control" placeholder="Type your message..."></textarea>
-            <button class="btn btn-success" onclick="sendMessage()">Send</button>
+        <div class="messages-body" id="messages-body" x-init="fetchMessages()">
+            <!-- Messages will be loaded here dynamically -->
+        </div>
+        <div class="messages-footer">
+            <textarea type="text" id="message-input" class="message-input" placeholder="Type a message..." x-model="newMessage"></textarea>
+            <button class="send-btn" @click="sendMessage()">Send</button>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
-<!--     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> -->
+    <!-- MDB5 and Other JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/14.0.0/marked.min.js" integrity="sha512-EnAXYDyFPJkTNa50ueQCSHjQGVOp8I9MiRrb3WMeY7x9IO+qdOElSRNvH35Sfk6+0uS4HV954WbpVDKAxjJPiA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" integrity="sha512-6yoqbrcLAHDWAdQmiRlHG4+m0g/CT/V9AGyxabG8j7Jk8j3r3K6due7oqpiRMZqcYe9WM2gPcaNNxnl2ux+3tA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked-highlight/2.1.4/index.umd.min.js" integrity="sha512-YHfFtx3BUUQ3Wk+kbZoqPDIxrgW0axUMM1KjVhsaeiQV36WJP1QP7np+tqTPIOU+6ev5BTGWR2IwcMjcPGuD+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.5/purify.min.js" integrity="sha512-JatFEe90fJU2nrgf27fUz2hWRvdYrSlTEV8esFuqCtfiqWN8phkS1fUl/xCfYyrLDQcNf3YyS0V9hG7U4RHNmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="main.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
 </body>
+
 </html>
