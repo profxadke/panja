@@ -1,0 +1,12 @@
+If you're using nushell then, venv activates using:
+overlay use .venv\bin\activate.nu
+
+Everywhere else, its either:
+source .venv/bin/activate
+
+or:
+
+.\.venv\Scripts\activate
+
+or if you're using gitBashWindows:
+source .\.venv\Scripts\activate
