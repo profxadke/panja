@@ -1,0 +1,223 @@
+body {
+    background-color: #c4c4c4;
+    color: #D1D1D1;
+    font-family: Arial, sans-serif;
+}
+
+.messages-container {
+    width: 97.7%; /* Adjusted to be wider */
+    /* max-width: 1200px; */
+    margin: 20px auto;
+    background-color: #23272A;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 40px);
+}
+
+.messages-header {
+    padding: 15px;
+    background-color: #2C2F33;
+    color: #FFFFFF;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-size: 1.25rem;
+}
+
+.messages-body {
+    padding: 15px;
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    position: relative;
+    max-width: 80%;
+    padding: 10px;
+    border-radius: 15px;
+    color: white;
+    word-wrap: break-word;
+}
+
+.message.bot {
+    background-color: #FF3399;
+    align-self: flex-start;
+    border-top-left-radius: 0;
+}
+
+.message.user {
+    background-color: #3399FF;
+    align-self: flex-end;
+    border-top-right-radius: 0;
+}
+
+.message.bot::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10px; /* Position the triangle to the left of the message bubble */
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #FF3399 transparent transparent; /* Triangle pointing towards the bubble */
+    transform: translateY(-50%);
+}
+
+.message.user::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -10px; /* Position the triangle to the right of the message bubble */
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent transparent #3399FF; /* Triangle pointing towards the bubble */
+    transform: translateY(-50%);
+}
+
+.typing-indicator {
+    align-self: flex-start;
+    background-color: #FF3399;
+    border-radius: 15px;
+    padding: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    animation: blink 1s infinite alternate;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.messages-footer {
+    padding: 15px;
+    background-color: #2C2F33;
+    display: flex;
+    gap: 10px;
+    border-radius: 10px;
+}
+
+.message-input {
+    flex-grow: 1;
+    border-radius: 25px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #40444B;
+    color: #FFFFFF;
+}
+
+.send-btn {
+    background-color: #3399FF;
+    color: white;
+    border-radius: 50px;
+    padding: 10px 20px;
+    border: none;
+    font-weight: bold;
+}
+
+.send-btn:hover {
+    background-color: #2786e7;
+}
+
+@media (max-width: 768px) {
+    .messages-container {
+        width: 95%; /* Wider for smaller screens */
+        height: calc(100vh - 20px);
+        margin: 10px auto;
+    }
+
+    .messages-footer {
+        padding: 10px;
+    }
+
+    .message-input {
+        padding: 8px 12px;
+    }
+
+    .send-btn {
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .messages-header {
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    .messages-footer {
+        padding: 8px;
+    }
+
+    .message-input {
+        padding: 6px 10px;
+    }
+
+    .send-btn {
+        padding: 6px 12px;
+    }
+}
+
+/* Target the scrollbar itself */
+::-webkit-scrollbar {
+    width: 8px; /* Set the scrollbar width */
+    background-color: #f5f5f5; /* Customize track background color */
+}
+
+/* Target the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Customize thumb background color */
+    border-radius: 10px; /* Add rounded corners */
+    border: 2px solid #f5f5f5; /* Add a thin border */
+}
+
+/* Target the scrollbar track */
+::-webkit-scrollbar-track {
+    background-color: #f5f5f5; /* Customize track background color */
+    border-radius: 10px; /* Add rounded corners */
+}
+
+/* Thumb Hover Effect */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #9e9e9e; /* Darken the thumb on hover */
+}
+
+/* Track Hover Effect */
+::-webkit-scrollbar-track:hover {
+    background-color: #e0e0e0; /* Slightly lighten the track on hover */
+}
+
+textarea::-webkit-scrollbar {
+    display: none; /* For Webkit browsers */
+}
+
+.hljs-copy {
+    float: right;
+    border-radius: 50px;
+    border: none;
+    background-color: #77B255;
+    font-size: initial;
+}
