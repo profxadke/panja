@@ -18,6 +18,7 @@ intents.message_content = True
 intents.members = True
 chat = None
 bot = Client(description=description, intents=intents)
+client = bot
 tree = app_commands.CommandTree(bot)
 
 
@@ -73,6 +74,17 @@ async def on_message(msg):
             return
         async with msg.channel.typing():
             resp = chat.send_message(msg.content).text.strip()
+            if len(resp) >= 1999:
+                response = split_string_by_chunk(resp, 1999)
+                await msg.reply(response[0], mention_author=False)
+                for resp in response[1:]:
+                    await msg.channel.send(resp)
+            else:
+                await msg.reply(resp, mention_author=False)
+    if bot.user.mentioned_in(msg):
+        msg_content = ' '.join(msg.content.split(' ')[1:])
+        async with msg.channel.typing():
+            resp = chat.send_message(msg_content).text.strip()
             if len(resp) >= 1999:
                 response = split_string_by_chunk(resp, 1999)
                 await msg.reply(response[0], mention_author=False)

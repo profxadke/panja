@@ -44,13 +44,13 @@ body {
 }
 
 .message.bot {
-    background-color: #FF3399;
+    background-color: #3399FF;
     align-self: flex-start;
     border-top-left-radius: 0;
 }
 
 .message.user {
-    background-color: #3399FF;
+    background-color: #FF3399;
     align-self: flex-end;
     border-top-right-radius: 0;
 }
@@ -62,7 +62,7 @@ body {
     left: -10px; /* Position the triangle to the left of the message bubble */
     border-width: 10px;
     border-style: solid;
-    border-color: transparent #FF3399 transparent transparent; /* Triangle pointing towards the bubble */
+    border-color: transparent #3399FF transparent transparent; /* Triangle pointing towards the bubble */
     transform: translateY(-50%);
 }
 
@@ -73,13 +73,13 @@ body {
     right: -10px; /* Position the triangle to the right of the message bubble */
     border-width: 10px;
     border-style: solid;
-    border-color: transparent transparent transparent #3399FF; /* Triangle pointing towards the bubble */
+    border-color: transparent transparent transparent #FF3399; /* Triangle pointing towards the bubble */
     transform: translateY(-50%);
 }
 
 .typing-indicator {
     align-self: flex-start;
-    background-color: #FF3399;
+    background-color: #3399FF;
     border-radius: 15px;
     padding: 10px;
     display: flex;
@@ -130,8 +130,8 @@ body {
 }
 
 .send-btn {
-    background-color: #3399FF;
-    color: white;
+    background-color: #F9C23C;
+    color: black;
     border-radius: 50px;
     padding: 10px 20px;
     border: none;
@@ -220,4 +220,9 @@ textarea::-webkit-scrollbar {
     border: none;
     background-color: #77B255;
     font-size: initial;
+}
+
+code {
+  background-color: #000;
+  padding: 2px;
 }

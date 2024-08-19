@@ -45,6 +45,23 @@ def chat(prompt: Prompt):
     return {"resp": reply.text.strip(), "history": chat_history}
 
 
+@api.get('/history')
+def return_chat_history():
+    try:
+        id = 0
+        chat_history = []
+        for history in Chat.history:
+            chat_history.append({
+                'id': id,
+                'role': history.role,
+                'content': history.parts[0].text
+            })
+            id += 1
+    except Exception as e:
+        raise HTTPException(status_code=555, detail=f"Unknwn Internal Server Error ~ Check Console/Terminal: {e}")
+    return {"resp": chat_history}
+
+
 app.mount("/", StaticFiles(directory="root", html = True), name="root")
 
 

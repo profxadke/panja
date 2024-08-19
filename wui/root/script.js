@@ -4,26 +4,27 @@ function messageApp() {
       messages: [],
       isTyping: false,
       fetchMessages() {
-          // Mock data
-          this.messages = [
-              { id: 1, content: 'Hello! How can I assist you today?', user: 'bot' },
-              { id: 2, content: 'Hello!', user: 'user' },
-              { id: 3, content: 'Tell me a joke', user: 'user' },
-              { id: 4, content: "Why don't scientists trust atoms? Because they make up everything!", user: 'bot' }
-          ];
-          this.renderMessages();
+
+          fetch('/history').then( response => {
+            response.json().then( resp => {
+              this.messages = resp.resp;
+              this.renderMessages();
+            })
+          })
+          
       },
       renderMessages() {
           const messagesBody = document.getElementById('messages-body');
-          messagesBody.innerHTML = ''; // Clear existing messages
+          messagesBody.innerHTML = '';
 
           // Render each message
           this.messages.forEach(msg => {
               const messageDiv = document.createElement('div');
               messageDiv.classList.add('message');
-              if (msg.user === 'bot') {
+        console.log(msg)
+              if (msg.role === 'model') {
                   messageDiv.classList.add('bot');
-              } else if (msg.user === 'user') {
+              } else if (msg.role === 'user') {
                   messageDiv.classList.add('user');
               }
               response = renderMD(msg.content).trim();
@@ -48,7 +49,7 @@ function messageApp() {
       sendMessage() {
           if (this.newMessage.trim() !== '') {
               // Add the new message to the mock data
-              const newMsg = { id: this.messages.length + 1, content: this.newMessage, user: 'user' };
+              const newMsg = { id: this.messages.length + 1, content: this.newMessage, role: 'user' };
               this.messages.push(newMsg);
               this.renderMessages();
 
@@ -66,21 +67,12 @@ function messageApp() {
               }).then( response => {
                     response.json().then( resp => {
                       this.isTyping = false;
-                      const botResponse = { id: this.messages.length + 1, content: resp.resp, user: 'bot' };
+                      const botResponse = { id: this.messages.length + 1, content: resp.resp, role: 'model' };
                       this.messages.push(botResponse);
                       this.renderMessages();
                   })
                 })
 
-
-              /* Mock bot response with a delay
-              setTimeout(() => {
-                  this.isTyping = false;
-                  const botResponse = { id: this.messages.length + 1, content: "This is a mock bot response.", user: 'bot' };
-                  this.messages.push(botResponse);
-                  this.renderMessages();
-              }, 2000); // 2 seconds delay for typing simulation
-              */
           }
       }
   }
@@ -89,6 +81,9 @@ function messageApp() {
 document.querySelector('textarea').onkeyup = e => {
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
+    element = document.querySelector('textarea');
+    element.focus();
+    element.setSelectionRange(element.value.length,element.value.length);
     document.querySelector('button').click()
   }
 }
