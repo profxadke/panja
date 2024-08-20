@@ -222,7 +222,12 @@ textarea::-webkit-scrollbar {
     font-size: initial;
 }
 
+pre {
+  border-radius: 15px;
+}
+
 code {
   background-color: #000;
+  border-radius: 15px;
   padding: 2px;
 }

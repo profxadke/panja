@@ -21,7 +21,7 @@ function messageApp() {
           this.messages.forEach(msg => {
               const messageDiv = document.createElement('div');
               messageDiv.classList.add('message');
-        console.log(msg)
+              // console.log(msg)
               if (msg.role === 'model') {
                   messageDiv.classList.add('bot');
               } else if (msg.role === 'user') {
@@ -87,6 +87,13 @@ document.querySelector('textarea').onkeyup = e => {
     document.querySelector('button').click()
   }
 }
+
+document.addEventListener('keydown', e => {
+  if ( e.key === "Tab" ) {
+    e.preventDefault();
+    document.querySelector('textarea').focus();
+  }
+})
 
 var marked = new marked.Marked(
   markedHighlight.markedHighlight({
