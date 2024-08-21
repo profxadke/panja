@@ -60,6 +60,8 @@ function messageApp() {
               this.isTyping = true;
               this.renderMessages();
 
+              const timer = Date.now();
+
               fetch('/chat', {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
@@ -67,7 +69,8 @@ function messageApp() {
               }).then( response => {
                     response.json().then( resp => {
                       this.isTyping = false;
-                      const botResponse = { id: this.messages.length + 1, content: resp.resp, role: 'model' };
+                      const took = ( Date.now() - timer ) / 1e3;
+                      const botResponse = { id: this.messages.length + 1, content: resp.resp + `<hr /><i>Took: ${took}s</i >`, role: 'model' };
                       this.messages.push(botResponse);
                       this.renderMessages();
                   })
