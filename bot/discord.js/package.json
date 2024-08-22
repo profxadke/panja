@@ -1,0 +1,23 @@
+{
+  "name": "discordjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "node.js",
+  "scripts": {
+    "dev": "nodemon main.js",
+    "bot": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.17.1",
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "eslint": "^9.9.0",
+    "nodemon": "^3.1.4"
+  }
+}

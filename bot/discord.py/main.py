@@ -37,7 +37,8 @@ def split_string_by_chunk(string, chunk_length):
 
 @tree.command(
     name="chat",
-    description="Talk with P4nj.A!"
+    description="Talk with P4nj.A!",
+    guild=Object(id=1274815394707935232)
 )
 async def chat(intr: Interaction, prompt: str):
     channel = intr.channel
@@ -65,9 +66,28 @@ async def on_ready():
     print('-'*5)
 
 
+def check(m):
+    if m.reference is not None and not m.is_system:
+         return True
+    return False
+
+
 @bot.event
 async def on_message(msg):
     # TODO: individual user's context handling for chat with the model.
+    print(msg.content)
+    if check(msg):
+        if msg.author.bot:
+            return
+        async with msg.channel.typing():
+            resp = chat.send_message(msg.content).text.strip()
+            if len(resp) >= 1999:
+                response = split_string_by_chunk(resp, 1999)
+                await msg.reply(response[0], mention_author=False)
+                for resp in response[1:]:
+                    await msg.channel.send(resp)
+            else:
+                await msg.reply(resp, mention_author=False)
     if not msg.guild:
         # This is a DM
         if msg.author.bot:
