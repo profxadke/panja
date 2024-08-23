@@ -218,9 +218,12 @@ async def login_for_access_token(
 
 # Privacy policy and Terms of Service endpoints
 @app.get('/pp')
+def privacy_policy():
+    return RedirectResponse('/privacy_policy.html')
+
 @app.get('/tos')
-async def serve_boring_pages():
-    return HTMLResponse("Privacy policy, and Application's Terms of Service supposed to be here")
+def terms_of_service():
+    return RedirectResponse('/tos.html')
 
 
 # Mount static files

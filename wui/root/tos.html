@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P4nj.A!</title>
+    <!-- MDB5 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet">
+    <!-- HTMX JS -->
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <!-- Alpine.js -->
+    <script src="https://unpkg.com/alpinejs@3.12.0" defer></script>
+    <!-- Custom CSS -->
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <div class="messages-container">
+            <div class="messages-header">
+            ✨ P4nj.A! - Terms of Service
+            </div>
+            <div class="messages-body" id="messages-body">
+            </div>
+            <!--<div class="messages-footer">
+                <textarea type="text" id="message-input" class="message-input" placeholder="Type a message..." x-model="newMessage"></textarea>
+                <button class="send-btn" @click="sendMessage()">Send</button>
+            </div>-->
+        </div>
+
+    </div>
+
+    <!-- MDB5 and Other JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/14.0.0/marked.min.js" integrity="sha512-EnAXYDyFPJkTNa50ueQCSHjQGVOp8I9MiRrb3WMeY7x9IO+qdOElSRNvH35Sfk6+0uS4HV954WbpVDKAxjJPiA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.5/purify.min.js" integrity="sha512-JatFEe90fJU2nrgf27fUz2hWRvdYrSlTEV8esFuqCtfiqWN8phkS1fUl/xCfYyrLDQcNf3YyS0V9hG7U4RHNmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Custom JS -->
+    <script>
+const $$ = (fn) => {
+    if (typeof fn !== 'function') {
+    throw new Error('Argument passed to ready should be a function');
+  }
+
+  if (document.readyState != 'loading') {
+    fn();
+  } else if (document.addEventListener) {
+    document.addEventListener('DOMContentLoaded', fn, {
+      once: true // A boolean value indicating that the listener should be invoked at most once after being added. If true, the listener would be automatically removed when invoked.
+    });
+  } else {
+    document.attachEvent('onreadystatechange', function() {
+      if (document.readyState != 'loading')
+        fn();
+    });
+  }
+};
+
+const renderMD = markdown => {
+  return DOMPurify.sanitize( marked.parse( markdown ) );
+}
+
+$$( () => {
+    fetch('/tos.md').then( response => {
+        response.text().then( resp => {
+            document.getElementById(`messages-body`).innerHTML = renderMD(resp).trim().replace(/\n/g, '<br />');
+        })
+    })
+})
+    </script>
+</body>
+
+</html>

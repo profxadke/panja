@@ -1,8 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
 body {
     background-color: #c4c4c4;
     color: #D1D1D1;
-    font-family: Arial, sans-serif;
-    display: block;
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: auto;
+    font-style: normal;
 }
 
 /* Parent container for layout */
