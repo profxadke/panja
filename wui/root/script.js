@@ -1,17 +1,23 @@
 function messageApp() {
   return {
       newMessage: '',
+      chat_id: 0,
+      conversations: [
+        { id: 0, name: 'Conversation 1' },
+        { id: 1, name: 'Conversation 2' },
+        { id: 2, name: 'Conversation 3' },
+      ],
       messages: [],
       isTyping: false,
       fetchMessages() {
 
-          fetch('/history').then( response => {
+          fetch(`/history/${this.chat_id}`, {headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}}).then( response => {
             response.json().then( resp => {
               this.messages = resp.resp;
               this.renderMessages();
             })
           })
-          
+
       },
       renderMessages() {
           const messagesBody = document.getElementById('messages-body');
@@ -19,6 +25,7 @@ function messageApp() {
 
           // Render each message
           this.messages.forEach(msg => {
+              // console.log(msg);
               const messageDiv = document.createElement('div');
               messageDiv.classList.add('message');
               // console.log(msg)
@@ -27,7 +34,7 @@ function messageApp() {
               } else if (msg.role === 'user') {
                   messageDiv.classList.add('user');
               }
-              response = renderMD(msg.content).trim();
+              response = renderMD(msg.message).trim();
               messageDiv.innerHTML = response.replace(/\n/g, '<br />');
               messagesBody.appendChild(messageDiv);
           });
@@ -48,8 +55,8 @@ function messageApp() {
       },
       sendMessage() {
           if (this.newMessage.trim() !== '') {
-              // Add the new message to the mock data
-              const newMsg = { id: this.messages.length + 1, content: this.newMessage, role: 'user' };
+              // console.log(this.newMessage);
+              const newMsg = { id: this.messages.length + 1, message: this.newMessage, role: 'user' };
               this.messages.push(newMsg);
               this.renderMessages();
 
@@ -62,13 +69,17 @@ function messageApp() {
 
               const timer = Date.now();
 
-              fetch('/chat', {
+              fetch(`/chat/${this.chat_id}`, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${localStorage.getItem('token')}`
+                },
                 body: JSON.stringify({message: newMsg.content.trim()})
               }).then( response => {
                     response.json().then( resp => {
                       this.isTyping = false;
+                      this.chat_id = resp.chat;
                       const took = ( Date.now() - timer ) / 1e3;
                       const botResponse = { id: this.messages.length + 1, content: resp.resp + `<hr /><i>Took: ${took}s</i >`, role: 'model' };
                       this.messages.push(botResponse);
@@ -77,6 +88,10 @@ function messageApp() {
                 })
 
           }
+      },
+      switchConversation(index) {
+        this.chat_id = index;
+        this.fetchMessages();
       }
   }
 }
@@ -140,4 +155,9 @@ const addCopyButton = () => {
 
 const renderMD = markdown => {
   return DOMPurify.sanitize( marked.parse( markdown ) );
+}
+
+
+if (!localStorage.getItem('token')) {
+  document.location = '/auth.html';  // TODO: Check token expiration too.
 }

@@ -1,5 +1,12 @@
-python-dotenv
+python-jose[cryptography]
 google-generativeai
+python-multipart
+psycopg2-binary
+python-dotenv
+fastapi[all]
+sqlalchemy
+requests
 pydantic
-fastapi
 uvicorn
+alembic
+httpx

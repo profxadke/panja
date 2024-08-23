@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticate youself</title>
+    <!-- MDB5 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #c4c4c4;
+            color: #D1D1D1;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #23272A;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .login-container h1 {
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .google-btn {
+            background-color: #FFFFFF;
+            color: #4285F4;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .google-btn:hover {
+            background-color: #f1f1f1;
+        }
+
+        .google-icon {
+            width: 18px;
+            height: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h1>✨Continue via Authentication</h1>
+        <button class="google-btn" onclick="location.href = '/login/google'">
+            <img src="Google_G_Logo.png" alt="Google Icon" class="google-icon">
+            Authenticate/Login/Sign Up with Google
+        </button>
+    </div>
+
+    <!-- Google OAuth 2.0 -->
+    <!--<script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        function googleLogin() {
+            google.accounts.id.initialize({
+                client_id: 'YOUR_GOOGLE_CLIENT_ID',
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.prompt(); // Display the One Tap prompt
+        }
+
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            // Here, send the ID token to your server for verification
+        }
+    </script>-->
+</body>
+
+</html>

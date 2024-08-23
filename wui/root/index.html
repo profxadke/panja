@@ -19,17 +19,33 @@
 </head>
 
 <body x-data="messageApp()">
-    <div class="messages-container">
-        <div class="messages-header">
-          ✨ P4nj.A! - Powered by Google AI
+
+    <div class="app-container">
+
+        <div class="sidebar">
+            <h2>Chats</h2>
+            <a class="btn-info" href="#" @click.prevent="alert('new convo code here.')">New conversation</a> <br />
+            <template class="conversation" x-for="conversation in conversations" :key="conversation.id">
+                <ul>
+                    <a href="#" @click.prevent="switchConversation(conversation.id)" :class="{'active': chat_id === conversation.id}" x-text="conversation.name"></a>
+                    <br />
+                </ul>
+            </template>
         </div>
-        <div class="messages-body" id="messages-body" x-init="fetchMessages()">
-            <!-- Messages will be loaded here dynamically -->
+
+        <div class="messages-container">
+            <div class="messages-header">
+            ✨ P4nj.A! - Powered by Google AI
+            </div>
+            <div class="messages-body" id="messages-body" x-init="fetchMessages()">
+                <!-- Messages will be loaded here dynamically -->
+            </div>
+            <div class="messages-footer">
+                <textarea type="text" id="message-input" class="message-input" placeholder="Type a message..." x-model="newMessage"></textarea>
+                <button class="send-btn" @click="sendMessage()">Send</button>
+            </div>
         </div>
-        <div class="messages-footer">
-            <textarea type="text" id="message-input" class="message-input" placeholder="Type a message..." x-model="newMessage"></textarea>
-            <button class="send-btn" @click="sendMessage()">Send</button>
-        </div>
+
     </div>
 
     <!-- MDB5 and Other JS -->
