@@ -13,11 +13,11 @@ const client = new Client({ intents: [ GatewayIntentBits.Guilds,
   GatewayIntentBits.GuildMembers ], partials: [ Partials.Channel,
     Partials.Message ]
 }); const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
+const chat = model.startChat();
 const splitMessage = (message, limit) => {
   const chunks = [];
   while (message.length > limit) {
     let chunk = message.slice(0, limit);
-    // Ensure we don't split in the middle of a word
     const lastSpaceIndex = chunk.lastIndexOf(' ');
     if (lastSpaceIndex > -1) {
       chunk = chunk.slice(0, lastSpaceIndex);
@@ -29,7 +29,7 @@ const splitMessage = (message, limit) => {
     chunks.push(message);
   }
   return chunks;
-};
+}; let chatContext = '';
 
 
 client.once(Events.ClientReady, bot => {
@@ -53,22 +53,30 @@ bot.on('messageCreate', async message => {
   }
 
   await message.channel.sendTyping();
-  const context = await model.generateContent(content);
-  const response = await context.response;
-  let resp = response.text().trim();
+  const context = await chat.sendMessage(content);
 
-  resp = splitMessage(resp, MESSAGE_LIMIT );
+  // TODO: Chat history sync.
+  // TODO: Indivdual user's chat context, and history sync.
+  if (!chatContext) {
+    const firstPrompt = chat._history[0].parts[0].text;
+    let contextPrompt = await model.generateContent(`Give me a short chat context to be set as chat title based on this as first prompt by the user: ${firstPrompt}`);
+    chatContext = contextPrompt.response.text().trim();
+  }
+
+  let response = context.response.text().trim();
+
+  response = splitMessage(response, MESSAGE_LIMIT );
 
   if (message.guild){
-    await message.reply({content: resp[0], allowedMentions: { repliedUser: false } });
-    if (resp.length - 1) {
-      resp.slice(1).forEach( async r => {
-        await message.channel.send({content: r });
+    await message.reply({content: response[0], allowedMentions: { repliedUser: false } });
+    if (response.length - 1) {
+      response.slice(1).forEach( async resp => {
+        await message.channel.send({content: resp });
       })
     }
   } else {
-    resp.forEach( async r => {
-      await message.author.send(r);
+    response.forEach( async resp => {
+      await message.author.send(resp);
     })
   }
 

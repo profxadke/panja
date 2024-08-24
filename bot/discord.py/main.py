@@ -17,6 +17,7 @@ intents = Intents.default()
 intents.message_content = True
 intents.members = True
 chat = None
+chatContent = ''
 bot = Client(description=description, intents=intents)
 client = bot
 tree = app_commands.CommandTree(bot)
@@ -59,6 +60,7 @@ async def chat(intr: Interaction, prompt: str):
 async def on_ready():
     global chat
     model = gAI.GenerativeModel('gemini-1.5-flash')
+    # TODO: Chat history sync.
     chat = model.start_chat()
     await tree.sync(guild=Object(id=1274815394707935232))
     print('-'*5)
@@ -73,55 +75,56 @@ def check(m):
 
 
 @bot.event
-async def on_message(msg):
+async def on_message(message):
+    # TODO: Determine chat context based on first prompt (just like one implemented on discord.js)
     # TODO: individual user's context handling for chat with the model.
-    print(msg.content)
-    if check(msg):
-        if msg.author.bot:
+    print(message.content)
+    if check(message):
+        if message.author.bot:
             return
-        async with msg.channel.typing():
-            resp = chat.send_message(msg.content).text.strip()
+        async with message.channel.typing():
+            resp = chat.send_message(message.content).text.strip()
             if len(resp) >= 1999:
                 response = split_string_by_chunk(resp, 1999)
-                await msg.reply(response[0], mention_author=False)
+                await message.reply(response[0], mention_author=False)
                 for resp in response[1:]:
-                    await msg.channel.send(resp)
+                    await message.channel.send(resp)
             else:
-                await msg.reply(resp, mention_author=False)
-    if not msg.guild:
+                await message.reply(resp, mention_author=False)
+    if not message.guild:
         # This is a DM
-        if msg.author.bot:
+        if message.author.bot:
             return
-        async with msg.channel.typing():
-            resp = chat.send_message(msg.content).text.strip()
+        async with message.channel.typing():
+            resp = chat.send_message(message.content).text.strip()
             if len(resp) >= 1999:
                 response = split_string_by_chunk(resp, 1999)
-                await msg.reply(response[0], mention_author=False)
+                await message.reply(response[0], mention_author=False)
                 for resp in response[1:]:
-                    await msg.channel.send(resp)
+                    await message.channel.send(resp)
             else:
-                await msg.reply(resp, mention_author=False)
-    if bot.user.mentioned_in(msg):
-        msg_content = ' '.join(msg.content.split(' ')[1:])
-        async with msg.channel.typing():
-            resp = chat.send_message(msg_content).text.strip()
+                await message.reply(resp, mention_author=False)
+    if bot.user.mentioned_in(message):
+        message_content = ' '.join(message.content.split(' ')[1:])
+        async with message.channel.typing():
+            resp = chat.send_message(message_content).text.strip()
             if len(resp) >= 1999:
                 response = split_string_by_chunk(resp, 1999)
-                await msg.reply(response[0], mention_author=False)
+                await message.reply(response[0], mention_author=False)
                 for resp in response[1:]:
-                    await msg.channel.send(resp)
+                    await message.channel.send(resp)
             else:
-                await msg.reply(resp, mention_author=False)
-    if msg.content.startswith('> '):
-        async with msg.channel.typing():
-            resp = chat.send_message(msg.content[2:]).text.strip()
+                await message.reply(resp, mention_author=False)
+    if message.content.startswith('> '):
+        async with message.channel.typing():
+            resp = chat.send_message(message.content[2:]).text.strip()
             if len(resp) >= 1999:
                 response = split_string_by_chunk(resp, 1999)
-                await msg.reply(response[0], mention_author=False)
+                await message.reply(response[0], mention_author=False)
                 for resp in response[1:]:
-                    await msg.channel.send(resp)
+                    await message.channel.send(resp)
             else:
-                await msg.reply(resp, mention_author=False)
+                await message.reply(resp, mention_author=False)
 
 
 if __name__ == '__main__':

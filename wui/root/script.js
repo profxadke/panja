@@ -3,9 +3,9 @@ function messageApp() {
       newMessage: '',
       chat_id: 0,
       conversations: [
-        { id: 0, name: 'Conversation 1' },
-        { id: 1, name: 'Conversation 2' },
-        { id: 2, name: 'Conversation 3' },
+        { id: 1, name: 'Conversation 1' },
+        { id: 2, name: 'Conversation 2' },
+        { id: 3, name: 'Conversation 3' },
       ],
       messages: [],
       isTyping: false,
@@ -14,6 +14,9 @@ function messageApp() {
           fetch(`/history/${this.chat_id}`, {headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}}).then( response => {
             response.json().then( resp => {
               this.messages = resp.resp;
+              if (!this.chat_id) {
+                this.chat_id = this.messages[0].chat_id;
+              }
               this.renderMessages();
             })
           })
@@ -25,7 +28,7 @@ function messageApp() {
 
           // Render each message
           this.messages.forEach(msg => {
-              // console.log(msg);
+              console.log(msg);
               const messageDiv = document.createElement('div');
               messageDiv.classList.add('message');
               // console.log(msg)
@@ -75,13 +78,14 @@ function messageApp() {
                   "Content-Type": "application/json",
                   "Authorization": `Bearer ${localStorage.getItem('token')}`
                 },
-                body: JSON.stringify({message: newMsg.content.trim()})
+                body: JSON.stringify({message: newMsg.message})
               }).then( response => {
                     response.json().then( resp => {
                       this.isTyping = false;
                       this.chat_id = resp.chat;
                       const took = ( Date.now() - timer ) / 1e3;
-                      const botResponse = { id: this.messages.length + 1, content: resp.resp + `<hr /><i>Took: ${took}s</i >`, role: 'model' };
+                      const botResponse = { id: this.messages.length + 1, message: resp.resp + `<hr /><i>Took: ${took}s</i >`, role: 'model' };
+                      console.log(botResponse);
                       this.messages.push(botResponse);
                       this.renderMessages();
                   })

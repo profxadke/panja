@@ -97,6 +97,10 @@ def _chat(prompt: Prompt, db: Session = Depends(get_db), id: int = 0, current_us
             db.refresh(new_chat)
             chat = new_chat
             id = chat.id
+            user = db.query(User).filter(User.email == current_user.email).first()
+            setattr(user, 'chat_id', id)
+            db.commit()
+            db.refresh(user)
         else:
             chat = db.query(Chat).filter(Chat.id == id).first()
             db.refresh(chat)
@@ -136,10 +140,10 @@ def return_chat_history(chat_id: int, db: Session = Depends(get_db), current_use
     # TODO: Prevent IDOR (leakage of chat history via other authenticated user(s).)
     try:
         if chat_id == 0:
-            return {"resp": []}
+            chat_history = db.query(History).filter(History.chat_id == current_user.chat_id).all()
         else:
             chat_history = db.query(History).filter(History.chat_id == chat_id).all()
-            return {"resp": chat_history}
+        return {"resp": chat_history}
     except Exception as e:
         raise HTTPException(status_code=555, detail=f"Unknown Internal Server Error: {e}")
 
@@ -216,12 +220,16 @@ async def login_for_access_token(
     return Token(access_token=access_token, token_type="bearer")
 
 
-# Privacy policy and Terms of Service endpoints
+# Privacy policy endpoint
 @app.get('/pp')
+@app.get('/privacy_policy')
 def privacy_policy():
     return RedirectResponse('/privacy_policy.html')
 
+
+# Terms of Service endpoint
 @app.get('/tos')
+@app.get('/terms_of_service')
 def terms_of_service():
     return RedirectResponse('/tos.html')
 
